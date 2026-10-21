@@ -1,0 +1,6 @@
+# release files are GitHub Release assets, not in git
+*.img
+*.zst
+*.deb
+*.zip
+*.jar
