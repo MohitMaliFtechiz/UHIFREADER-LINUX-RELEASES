@@ -14,6 +14,7 @@ Source: [UHIFREADER-LINUX](https://github.com/MohitMaliFtechiz/UHIFREADER-LINUX)
 | `idtech-uhf_<version>_amd64.deb` | The same for an x86-64 PC with Ubuntu 22.04 and a USB reader |
 | `idtech-uhf-sdk-<version>.zip` | Reader SDK kit: jar, sources, examples, guide |
 | `idtech-connect-client-<version>.zip` | Client SDK kit: for programs that use an ID TECH app's web service |
+| `upgrade_tool_v2.30_for_linux.zip` | Rockchip's flashing tool for a Linux PC (x86-64), from the RK3576 SDK, unmodified |
 | `SHA256SUMS` | Checksums of the files above |
 
 ## Flash the board
@@ -21,10 +22,16 @@ Source: [UHIFREADER-LINUX](https://github.com/MohitMaliFtechiz/UHIFREADER-LINUX)
 1. Download the image and unpack it: `zstd -d GB_RK3576_UBUNTU2204_*.img.zst`
 2. Put the board in Loader mode: hold **Recovery** while powering it on, with its USB OTG port connected to the PC.
 3. Flash:
-   - Linux: `sudo ./upgrade_tool uf GB_RK3576_UBUNTU2204_*.img`
+   - Linux (x86-64 PC), with `upgrade_tool_v2.30_for_linux.zip` from the release:
+     ```
+     unzip upgrade_tool_v2.30_for_linux.zip
+     cd upgrade_tool_v2.30_for_linux && chmod +x upgrade_tool
+     sudo ./upgrade_tool ld                                   # the board is listed: "Mode=Loader"
+     sudo ./upgrade_tool uf /path/to/GB_RK3576_UBUNTU2204_*.img
+     ```
+     The board reboots into Ubuntu when it is done.
    - Windows: RKDevTool > Upgrade Firmware > Firmware: choose the `.img` > Upgrade
-
-   Both tools come with Rockchip's SDK for the RK3576 (`RKDevTool` needs Rockchip's USB driver).
+     (RKDevTool and its USB driver come with Rockchip's SDK for the RK3576).
 4. First boot takes a little longer: the root filesystem grows to the whole eMMC and the board
    makes its own SSH keys.
 
@@ -61,3 +68,5 @@ The superadmin recovery account of the factory images is not in the public build
 - The ID TECH packages contain OpenJFX 22.0.2 (GPL-2.0 with the Classpath Exception) and the
   Outfit, Roboto and Roboto Mono fonts (SIL OFL 1.1); see
   `/usr/share/doc/idtech-uhf/NOTICE` once installed.
+- `upgrade_tool` is Rockchip's (Fuzhou Rockchip Electronics), redistributed as shipped in the
+  RK3576 SDK; its own guide (Chinese, PDF) and revision history are in the zip.
